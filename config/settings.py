@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zzu6=lywjyx7db%4%4id(@1eu4*_^(19&xdm@6hhkh4g(_sfw*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '127.0.0.1:8000']
 
 
 # Application definition
@@ -125,10 +125,12 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Directory where static files will be collected
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+AUTHENTICATION_BACKENDS = [
+    'auth_login.backends.EmailBackend', 
+    'django.contrib.auth.backends.ModelBackend',
+]

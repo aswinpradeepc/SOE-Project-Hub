@@ -23,12 +23,8 @@ class StudentRegistrationForm(UserCreationForm):
         return user
 
 class FacultyLoginForm(forms.Form):
-    username = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email', 'required': 'required'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email', 'required': 'required'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'required': 'required'}))
-
-# class StudentLoginForm(forms.Form):
-#     username = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email', 'required': 'required'}))
-#     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'required': 'required'}))
 
 class StudentLoginForm(forms.Form):
     username = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email', 'required': 'required'}))
