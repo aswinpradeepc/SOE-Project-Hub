@@ -1,0 +1,210 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Select Faculty</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/slicknav.css">
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="assets/css/progressbar_barfiller.css">
+    <link rel="stylesheet" href="assets/css/gijgo.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/animated-headline.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+body {
+    background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #C06C84 100%);
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.header .profile-btn {
+    display: flex;
+    align-items: center;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.header .profile-btn:hover {
+    color: #0056b3;
+}
+
+.header .profile-btn img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.section {
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.section:last-child {
+    border-bottom: none;
+}
+
+.section h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #495057;
+}
+
+.faculty-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.faculty-item {
+    width: calc(33.333% - 20px);
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    text-align: center;
+    background: #f8f9fa;
+    transition: background 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.faculty-item:hover {
+    background: #e2e2e2;
+    transform: translateY(-5px);
+}
+
+.faculty-item img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.faculty-item h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #495057;
+}
+
+.faculty-item p {
+    margin: 0;
+    font-size: 16px;
+    color: #6c757d;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Select Faculty</h1>
+            <a href="faculty-profile.html" class="profile-btn">
+                <img src="assets/img/faculty-photo.jpg" alt="Profile Photo"> My Profile
+            </a>
+        </div>
+
+        <div class="section">
+            <h2>Faculty List</h2>
+            <div class="faculty-list">
+                <div class="faculty-item" onclick="selectFaculty('faculty1')">
+                    <img src="assets/img/faculty1.jpg" alt="Faculty 1">
+                    <h3>Dr. John Doe</h3>
+                    <p>Computer Science</p>
+                </div>
+                <div class="faculty-item" onclick="selectFaculty('faculty2')">
+                    <img src="assets/img/faculty2.jpg" alt="Faculty 2">
+                    <h3>Dr. Jane Smith</h3>
+                    <p>Mathematics</p>
+                </div>
+                <div class="faculty-item" onclick="selectFaculty('faculty3')">
+                    <img src="assets/img/faculty3.jpg" alt="Faculty 3">
+                    <h3>Dr. Emily Johnson</h3>
+                    <p>Physics</p>
+                </div>
+                <!-- Add more faculty items as needed -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectFaculty(facultyId) {
+            alert('Faculty ' + facultyId + ' selected');
+            // You can redirect to a different page or handle the selection as needed
+        }
+    </script>
+
+    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="./assets/js/jquery.slicknav.min.js"></script>
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/slick.min.js"></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/animated.headline.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
+    <!-- Date Picker -->
+    <script src="./assets/js/gijgo.min.js"></script>
+    <!-- Nice-select, sticky -->
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.sticky.js"></script>
+    <!-- Progress -->
+    <script src="./assets/js/jquery.barfiller.js"></script>
+    <!-- counter , waypoint,Hover Direction -->
+    <script src="./assets/js/jquery.counterup.min.js"></script>
+    <script src="./assets/js/waypoints.min.js"></script>
+    <script src="./assets/js/jquery.countdown.min.js"></script>
+    <script src="./assets/js/hover-direction-snake.min.js"></script>
+    <!-- contact js -->
+    <script src="./assets/js/contact.js"></script>
+    <script src="./assets/js/jquery.form.js"></script>
+    <script src="./assets/js/jquery.validate.min.js"></script>
+    <script src="./assets/js/mail-script.js"></script>
+    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+    <!-- Jquery Plugins, main Jquery -->
+    <script src="./assets/js/plugins.js"></script>
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>
