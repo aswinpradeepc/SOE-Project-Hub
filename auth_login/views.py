@@ -3,10 +3,20 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from .forms import *
 from django.contrib.auth.models import Group
+from django.contrib import messages
+
 
 def ask_login(request):
     return render(request, 'auth_login/ask_login.html')
 
+def join_team(request):
+    return render(request, 'auth_login/join-team.html')
+
+def team_selection(request):
+    return render(request, 'auth_login/team_selection.html')
+
+def create_team(request):
+    return render(request, 'auth_login/create-team.html')
 
 def register(request):
     if request.method == 'POST':
@@ -16,7 +26,7 @@ def register(request):
             user = form.save()
             user.backend = 'django.contrib.auth.backends.ModelBackend' 
             login(request, user)
-            return redirect('/')  # Replace with your desired redirect URL
+            return redirect('/auth/team_selection')  # Replace with your desired redirect URL
         else:
             print("Form is not valid")
             print(form.errors)
@@ -34,14 +44,13 @@ def student_login(request):
             if user is not None and user.groups.filter(name='Students').exists():
                 login(request, user)
                 print("login success")
-                return redirect('/')  # Redirect to student dashboard
+                return redirect('/project/student_dashboard')  # Redirect to student dashboard
             else:
                 form.add_error(None, 'Invalid email or password')
     else:
         form = StudentLoginForm()
     return render(request, 'auth_login/student_login.html', {'form': form})
 
-from django.contrib import messages
 
 def faculty_login(request):
     if request.method == 'POST':

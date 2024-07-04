@@ -1,0 +1,182 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Project Details</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="{% static 'assets/img/site.webmanifest' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!-- Other CSS links... -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #C06C84 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: 50px auto;
+            flex-grow: 1;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .project-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .project-id {
+            text-align: right;
+        }
+        .project-id label {
+            display: block;
+            font-size: 14px;
+        }
+        .project-id span {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        h3 {
+            color: white;  /* Golden yellow for better readability */
+            margin-bottom: 20px;
+        }
+        .team-members, .submission-details {
+            margin-top: 30px;
+        }
+        .team-members ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .team-members li {
+            background: white;
+            color: #4A00E0;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: block;
+        }
+        .faculty {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        a {
+            color: whitesmoke;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        h3 {
+            margin-bottom: 20px;
+            display: inline-block;  /* This allows the underline to match the text width */
+            border-bottom: 2px solid white;  /* White underline */
+            padding-bottom: 5px;  /* Space between text and underline */
+        }
+        .team-members li {
+            background: none;
+            color: white;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: block;
+        }
+        .faculty {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+    </style>
+</head>
+<body>
+    <main class="project-container">
+        <!-- Navigation and Header -->
+        <header>
+            <div class="header-top">
+                <div class="project-name">{{ project.project_name }}</div>
+                <div class="project-id">
+                    <label>Project ID</label>
+                    <span>{{ project.project_id }}</span>
+                </div>
+            </div>
+        </header>
+        <hr>
+        <!-- Team Members -->
+        <section class="team-members">
+            <h3>Team Members</h3>
+            <ul>
+                <li class="faculty">Faculty: {{ faculty }}</li>
+                {% for member in team_members %}
+                    <li>{{ forloop.counter }}. {{ member }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Submission Details -->
+        <section class="submission-details">
+            <h3>Submission Details</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th>Document</th>
+                        <th>Upload</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in submission_documents %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ document.name }}</td>
+                            <td><a href="{{ document.file.url }}">Download</a></td>
+                            <td>{{ document.deadline }}</td>
+                            <td>
+                                {% if document.file %}
+                                    Submitted
+                                {% else %}
+                                    Pending
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
