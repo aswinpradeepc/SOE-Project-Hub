@@ -56,41 +56,15 @@ body {
 .pt-30 {
     padding-top: 30px;
 }
-    </style>
+</style>
 </head>
 <body>
-    <!-- Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="assets/img/logo/loder.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Preloader End -->
-
     <main class="login-body">
         <!-- Create Team -->
-        <form class="form-default" action="create-team-success.html" method="POST">
+        <form class="form-default" action="{% url 'create_team' %}" method="POST">
+            {% csrf_token %}
             <div class="login-form">
                 <h2>Create Team</h2>
-                <div class="form-input">
-                    <label for="team-name">Team Name</label>
-                    <input type="text" id="team-name" name="team-name" placeholder="Enter Team Name" required>
-                </div>
-                <div class="form-input">
-                    <label for="faculty">Select Faculty</label>
-                    <select id="faculty" name="faculty" required>
-                        <option value="" disabled selected>Select Faculty</option>
-                        <option value="faculty1">Dr. John Doe - Computer Science</option>
-                        <option value="faculty2">Dr. Jane Smith - Mathematics</option>
-                        <option value="faculty3">Dr. Emily Johnson - Physics</option>
-                        <!-- Add more options as needed -->
-                    </select>
-                </div><br>
                 <div class="form-input">
                     <label for="project-title">Project Title</label>
                     <input type="text" id="project-title" name="project-title" placeholder="Enter Project Title" required>
@@ -99,6 +73,16 @@ body {
                     <label for="project-description">Project Description</label>
                     <textarea id="project-description" name="project-description" placeholder="Enter Project Description" rows="4" required></textarea>
                 </div>
+                <div class="form-input">
+                    <label for="faculty">Select Faculty</label>
+                    <select id="faculty" name="faculty" required>
+                        <option value="" disabled selected>Select Faculty</option>
+                        {% for faculty in faculty_members %}
+                            <option value="{{ faculty.id }}">{{ faculty.user.username }} - {{ faculty.dept }}</option>
+                        {% endfor %}
+                    </select>
+                </div><br>
+
                 <div class="form-input pt-30">
                     <input type="submit" name="submit" value="Create Team">
                 </div>
@@ -106,5 +90,6 @@ body {
         </form>
         <!-- /end create team form -->
     </main>
+
 
     {% endblock %}

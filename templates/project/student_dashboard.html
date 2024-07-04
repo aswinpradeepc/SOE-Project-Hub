@@ -118,7 +118,22 @@
             font-weight: bold;
             margin-bottom: 15px;
         }
-
+        .upload-button {
+            background-color: #4A00E0;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .upload-button:hover {
+            background-color: #8E2DE2;
+        }
     </style>
 </head>
 <body>
@@ -153,7 +168,7 @@
                     <tr>
                         <th>Sl No</th>
                         <th>Document</th>
-                        <th>Upload</th>
+                        <th>Upload/Download</th>
                         <th>Deadline</th>
                         <th>Status</th>
                     </tr>
@@ -163,7 +178,17 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ document.name }}</td>
-                            <td><a href="{{ document.file.url }}">Download</a></td>
+                            <td>
+                                {% if document.file %}
+                                    <a href="{{ document.file.url }}">Download</a>
+                                {% else %}
+                                    <form action="{% url 'upload_document' project_id=project.project_id document=document.name %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <input type="file" name="file">
+                                        <button type="submit" class="upload-button">Upload</button>
+                                    </form>
+                                {% endif %}
+                            </td>
                             <td>{{ document.deadline }}</td>
                             <td>
                                 {% if document.file %}
