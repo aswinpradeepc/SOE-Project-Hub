@@ -14,6 +14,7 @@ def register(request):
         print(form)
         if form.is_valid():
             user = form.save()
+            user.backend = 'django.contrib.auth.backends.ModelBackend' 
             login(request, user)
             return redirect('/')  # Replace with your desired redirect URL
         else:
@@ -40,64 +41,33 @@ def student_login(request):
         form = StudentLoginForm()
     return render(request, 'auth_login/student_login.html', {'form': form})
 
+from django.contrib import messages
+
 def faculty_login(request):
-    print("Faculty login view called")
     if request.method == 'POST':
-        print("POST request received")
         form = FacultyLoginForm(request.POST)
         if form.is_valid():
-            print("Form is valid")
-            email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            print(f"Email: {email}, Password: {password}")
-            user = authenticate(request, username=email, password=password)
-            if user is not None:
-                print(f"Authenticated user: {user}")
-                if user.groups.filter(name='Faculty').exists():
-                    print("User is in Faculty group")
-                    login(request, user)
-                    return redirect('faculty_dashboard')
-                else:
-                    print("User is not in Faculty group")
-                    form.add_error(None, 'Invalid email or password')
-            else:
-                print("Authentication failed")
+            print(f"Attempting login for user: {username} with password: {password}")
+            
+            user = authenticate(request, username=username, password=password)
+            if user is None:
+                print("Authentication failed: user is None")
                 form.add_error(None, 'Invalid email or password')
+            else:
+                print(f"User authenticated: {user}")
+                faculty_group = Group.objects.get(name='Faculty')
+                if faculty_group in user.groups.all():
+                    login(request, user)
+                    print("Login success")
+                    return redirect('/')  # Redirect to faculty dashboard
+                else:
+                    print(f"User is not in Faculty group. User groups: {user.groups.all()}")
+                    form.add_error(None, 'You do not have permission to access this page')
         else:
             print("Form is not valid")
-            print(form.errors)  # Print form errors for debugging
+            print(form.errors)
     else:
-        print("GET request received")
         form = FacultyLoginForm()
     return render(request, 'auth_login/faculty_login.html', {'form': form})
-
-    print("Faculty login view called")
-    if request.method == 'POST':
-        print("POST request received")
-        form = FacultyLoginForm(request.POST)
-        if form.is_valid():
-            print("Form is valid")
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            print(f"Email: {email}, Password: {password}")  # Detailed debug print
-            user = authenticate(request, username=email, password=password)
-            if user is not None:
-                print(f"Authenticated user: {user}")
-                if user.groups.filter(name='Faculty').exists():
-                    print("User is in Faculty group")
-                    login(request, user)
-                    return redirect('/')
-                else:
-                    print("User is not in Faculty group")
-                    form.add_error(None, 'Invalid email or password')
-            else:
-                print("Authentication failed")
-                form.add_error(None, 'Invalid email or password')
-        else:
-            print("Form is not valid")
-            print(form.errors)  # Print form errors for debugging
-    else:
-        print("GET request received")
-        form = FacultyLoginForm()
-    return render(request, 'auth_login/faculty_login.html', {'form': form})
-

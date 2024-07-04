@@ -58,7 +58,8 @@ body {
     margin-bottom: 10px;
 }
 
-.form-input input {
+.form-input input,
+.form-input select {
     width: 100%;
     padding: 15px;
     border-radius: 5px;
@@ -67,7 +68,8 @@ body {
     font-size: 16px;
 }
 
-.form-input input::placeholder {
+.form-input input::placeholder,
+.form-input select {
     color: #fff;
 }
 
@@ -137,6 +139,13 @@ body {
                         <div class="error">{{ form.email.errors }}</div>
                     {% endif %}
                 </div>
+                <div class="form-input">
+                    <label for="id_dept">Department</label>
+                    {{ form.dept }}
+                    {% if form.dept.errors %}
+                        <div class="error">{{ form.dept.errors }}</div>
+                    {% endif %}
+                </div><br>
                 <div class="form-input">
                     <label for="id_password1">Password</label>
                     {{ form.password1 }}
