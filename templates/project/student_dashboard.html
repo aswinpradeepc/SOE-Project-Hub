@@ -21,21 +21,23 @@
             padding: 0;
         }
         body {
-            background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #C06C84 100%);
-            color: white;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-        }
-        .project-container {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            margin: 50px auto;
-            flex-grow: 1;
-        }
+        background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #8E2DE2 100%);
+        background-attachment: fixed;
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+    }
+    .project-container {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 1400px;
+        margin: 50px auto;
+        flex-grow: 1;
+    }
         .header-top {
             display: flex;
             justify-content: space-between;
@@ -171,6 +173,7 @@
                         <th>Upload/Download</th>
                         <th>Deadline</th>
                         <th>Status</th>
+                        <th>Marks</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -180,7 +183,7 @@
                             <td>{{ document.name }}</td>
                             <td>
                                 {% if document.file %}
-                                    <a href="{{ document.file.url }}">Download</a>
+                                    <a href="{{ document.file.url }}" target="_blank">Download</a>
                                 {% else %}
                                     <form action="{% url 'upload_document' project_id=project.project_id document=document.name %}" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
@@ -197,6 +200,7 @@
                                     Pending
                                 {% endif %}
                             </td>
+                            <td>{{ document.marks|default_if_none:"-" }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

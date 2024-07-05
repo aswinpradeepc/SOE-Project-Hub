@@ -133,7 +133,7 @@ def faculty_login(request):
                 if faculty_group in user.groups.all():
                     login(request, user)
                     print("Login success")
-                    return redirect('/')  # Redirect to faculty dashboard
+                    return redirect('/project/faculty_dashboard')  # Redirect to faculty dashboard
                 else:
                     print(f"User is not in Faculty group. User groups: {user.groups.all()}")
                     form.add_error(None, 'You do not have permission to access this page')

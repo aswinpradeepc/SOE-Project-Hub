@@ -126,7 +126,7 @@
             <h3>Teams</h3>
             <ul>
                 {% for team in teams %}
-                    <li><a href="/">{{ forloop.counter }}. {{ team.project_id.project_name }}</a></li>
+                    <li><a href="{% url 'project_detail' team.project_id_id %}">{{ forloop.counter }}. {{ team.project_id}}</a></li>
                 {% endfor %}
             </ul>
         </section>
