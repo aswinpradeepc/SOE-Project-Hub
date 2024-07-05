@@ -1,6 +1,11 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Project, Team
+from .models import Project, Team, Announcement
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.contrib import messages
+from .forms import DocumentUploadForm
+from auth_login.models import FacultyProfile
 
 @login_required
 def student_dashboard(request):
@@ -8,7 +13,10 @@ def student_dashboard(request):
     student_profile = request.user.student_profile
 
     # Find the team where the student is a member
-    team = get_object_or_404(Team, member1=student_profile)
+    team = get_object_or_404(Team, Q(member1=student_profile) | 
+                                  Q(member2=student_profile) | 
+                                  Q(member3=student_profile) | 
+                                  Q(member4=student_profile))
 
     # Access the project through the team
     project_id = team.project_id
@@ -41,13 +49,7 @@ def student_dashboard(request):
     }
     return render(request, 'project/student_dashboard.html', context)
 
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from django.contrib import messages
-from .models import Project
-from .forms import DocumentUploadForm
-
+@login_required
 def upload_document(request, project_id, document):
     # Fetch the project based on project_id
     project = get_object_or_404(Project, project_id=project_id)
@@ -89,3 +91,22 @@ def upload_document(request, project_id, document):
         'document_name': document.capitalize(),
     }
     return render(request, 'project/document_upload.html', context)
+
+@login_required
+def faculty_dashboard(request):
+    faculty = FacultyProfile.objects.get(user=request.user)
+    teams = Team.objects.filter(faculty=faculty)
+    print(teams)
+    announcements = Announcement.objects.all()
+    context = {
+        'faculty_name': faculty.user.username,
+        'teams': teams,
+        'announcements': announcements,
+    }
+    return render(request, 'project/faculty_dashboard.html', context)
+
+def make_announcement(request):
+    if request.method == 'POST':
+        text = request.POST['announcement_text']
+        Announcement.objects.create(text=text)
+    return redirect('faculty_dashboard')

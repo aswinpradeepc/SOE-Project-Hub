@@ -1,5 +1,4 @@
 from django.db import models
-from auth_login.models import StudentProfile, FacultyProfile
 
 class Project(models.Model):
     project_id = models.AutoField(primary_key=True)
@@ -34,12 +33,12 @@ class Project(models.Model):
         return self.project_name
 
 class Team(models.Model):
-    member1 = models.ForeignKey(StudentProfile, related_name='team_member1', on_delete=models.CASCADE)
-    member2 = models.ForeignKey(StudentProfile, related_name='team_member2', on_delete=models.CASCADE, blank=True, null=True)
-    member3 = models.ForeignKey(StudentProfile, related_name='team_member3', on_delete=models.CASCADE, blank=True, null=True)
-    member4 = models.ForeignKey(StudentProfile, related_name='team_member4', on_delete=models.CASCADE, blank=True, null=True)
+    member1 = models.ForeignKey('auth_login.StudentProfile', related_name='team_member1', on_delete=models.CASCADE)
+    member2 = models.ForeignKey('auth_login.StudentProfile', related_name='team_member2', on_delete=models.CASCADE, blank=True, null=True)
+    member3 = models.ForeignKey('auth_login.StudentProfile', related_name='team_member3', on_delete=models.CASCADE, blank=True, null=True)
+    member4 = models.ForeignKey('auth_login.StudentProfile', related_name='team_member4', on_delete=models.CASCADE, blank=True, null=True)
     
-    faculty = models.ForeignKey(FacultyProfile, on_delete=models.CASCADE)
+    faculty = models.ForeignKey('auth_login.FacultyProfile', on_delete=models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -47,3 +46,10 @@ class Team(models.Model):
 
     class Meta:
         unique_together = ('project_id',)
+
+
+class Announcement(models.Model):
+    text = models.TextField()
+
+    def __str__(self):
+        return self.text[:50]  # Display first 50 characters

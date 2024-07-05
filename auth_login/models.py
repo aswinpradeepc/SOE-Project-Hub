@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from project.models import Project
 
 class FacultyProfile(models.Model):
     DEPARTMENT_CHOICES = [
@@ -47,6 +48,7 @@ class StudentProfile(models.Model):
         choices=DEPARTMENT_CHOICES,
         default='CS',  # Set a default value if necessary
     )
+    project_id = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f'{self.user.username} - Student'
