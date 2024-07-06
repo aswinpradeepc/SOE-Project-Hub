@@ -136,6 +136,13 @@
         .upload-button:hover {
             background-color: #8E2DE2;
         }
+        .announcement-item {
+            background: white;
+            color: #4A00E0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -160,6 +167,17 @@
                     <li>{{ forloop.counter }}. {{ member }}</li>
                 {% endfor %}
             </ul>
+        </section>
+
+        <section class="announcements">
+            <div>
+                <h3>Announcements</h3>
+                <div class="announcement-list" style="margin-bottom: 20px;">
+                    {% for announcement in announcements %}
+                        <div class="announcement-item" >  {{ announcement.text }}</div>
+                    {% endfor %}
+                </div>
+            </div>
         </section>
 
         <!-- Submission Details -->

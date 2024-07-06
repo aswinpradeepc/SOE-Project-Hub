@@ -133,18 +133,20 @@
 
         <!-- Announcements -->
         <section class="announcements">
-            <h3>Announcements</h3>
-            <div class="announcement-list">
-                {% for announcement in announcements %}
-                    <div class="announcement-item">{{ announcement.text }}</div>
-                {% endfor %}
-            </div>
-            <div class="announcement-form">
-                <form action="{% url 'make_announcement' %}" method="post">
-                    {% csrf_token %}
-                    <textarea name="announcement_text" placeholder="Write your announcement here..."></textarea>
-                    <button type="submit">Make Announcement</button>
-                </form>
+            <div>
+                <h3>Announcements</h3>
+                <div class="announcement-list" style="margin-bottom: 20px;">
+                    {% for announcement in announcements %}
+                        <div class="announcement-item" style="padding: 10px; border: 1px solid #ccc; margin-bottom: 10px;">{{ announcement.text }}</div>
+                    {% endfor %}
+                </div>
+                <div class="announcement-form">
+                    <form action="{% url 'make_announcement' %}" method="post">
+                        {% csrf_token %}
+                        <textarea name="announcement_text" placeholder="Write your announcement here..." style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+                        <button type="submit" class="btn btn-primary">Make Announcement</button>
+                    </form>
+                </div>
             </div>
         </section>
     </main>

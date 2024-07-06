@@ -22,6 +22,8 @@ def student_dashboard(request):
     ]
     faculty_name = str(team.faculty).replace(' - Faculty', '')
 
+    announcements = Announcement.objects.filter(faculty=team.faculty)
+
     submission_documents = [
         {'name': 'abstract', 'file': project.abstract, 'deadline': project.abstract_deadline, 'marks': project.abstract_marks},
         {'name': 'srs', 'file': project.srs, 'deadline': project.srs_deadline, 'marks': project.srs_marks},
@@ -36,13 +38,14 @@ def student_dashboard(request):
         'team_members': team_members,
         'faculty': faculty_name,
         'submission_documents': submission_documents,
+        'announcements':announcements,
     }
     return render(request, 'project/student_dashboard.html', context)
 
 
 @login_required
 def upload_document(request, project_id, document):
-    # Fetch the project based on project_id
+    # Fetch the project based on project_idannounce
     project = get_object_or_404(Project, project_id=project_id)
 
     if request.method == 'POST':
@@ -84,23 +87,26 @@ def upload_document(request, project_id, document):
     return render(request, 'project/document_upload.html', context)
 
 @login_required
+def make_announcement(request):
+    if request.method == 'POST':
+        text = request.POST['announcement_text']
+        faculty = FacultyProfile.objects.get(user=request.user)
+        Announcement.objects.create(text=text, faculty=faculty)
+        return redirect('faculty_dashboard')
+
+@login_required
 def faculty_dashboard(request):
     faculty = FacultyProfile.objects.get(user=request.user)
     teams = Team.objects.filter(faculty=faculty)
     print(teams)
-    announcements = Announcement.objects.all()
+    announcements = Announcement.objects.filter(faculty=faculty)
     context = {
         'faculty_name': faculty.user.username,
         'teams': teams,
         'announcements': announcements,
     }
+    print(announcements)
     return render(request, 'project/faculty_dashboard.html', context)
-
-def make_announcement(request):
-    if request.method == 'POST':
-        text = request.POST['announcement_text']
-        Announcement.objects.create(text=text)
-    return redirect('faculty_dashboard')
 
 def upload_document(request, project_id, document):
     project = get_object_or_404(Project, pk=project_id)
