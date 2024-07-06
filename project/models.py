@@ -50,6 +50,7 @@ class Team(models.Model):
 
 class Announcement(models.Model):
     text = models.TextField()
+    faculty = models.ForeignKey('auth_login.FacultyProfile', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.text[:50]  # Display first 50 characters

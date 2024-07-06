@@ -136,6 +136,7 @@ def evaluate_document(request, project_id, document):
 
 
 
+
 @login_required
 def project_detail(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
