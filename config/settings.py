@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'auth_login',
     'project',
+	'feedback',
+	'widget_tweaks'
     'support'
 ]
 
