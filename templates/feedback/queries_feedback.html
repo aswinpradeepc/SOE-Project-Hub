@@ -3,45 +3,52 @@
 {% load widget_tweaks %}
 {% block content %}
     <style>
-    body {
-        background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #8E2DE2 100%);
-        background-attachment: fixed;
-        color: white;
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-    }
-    .card {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        color:white
-    }
-    h2{
-        color: white;
-    }
-    label{
-        color:black
-    }
-    .card-title {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #4cd3e3;
-    }
-    .card-subtitle {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 10px;
+        body {
+            background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #8E2DE2 100%);
+            background-attachment: fixed;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
 
-    }
-    .card-text {
-        font-size: 16px;
-        margin-bottom: 10px;
-        color:white
-    }
-    h3 {
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            color: white
+        }
+
+        h2 {
+            color: white;
+        }
+
+        label {
+            color: black
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4cd3e3;
+        }
+
+        .card-subtitle {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+
+        }
+
+        .card-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: white
+        }
+
+        h3 {
             color: white;
             margin-bottom: 20px;
             display: inline-block;
@@ -49,153 +56,167 @@
             padding-bottom: 5px;
         }
     </style>
-<div class="container mt-4">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="queries-tab" data-bs-toggle="tab" data-bs-target="#queries" type="button" role="tab" aria-controls="queries" aria-selected="true">Queries & Replies</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button" role="tab" aria-controls="feedback" aria-selected="false">Feedback</button>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="queries" role="tabpanel" aria-labelledby="queries-tab">
-            <div class="d-flex justify-content-between align-items-center my-3">
-                <h2 >Queries & Replies</h2>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#queryModal">
-                    Add New Query
+    <div class="container mt-4">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="queries-tab" data-bs-toggle="tab" data-bs-target="#queries"
+                        type="button" role="tab" aria-controls="queries" aria-selected="true">Queries & Replies
                 </button>
-            </div>
-            {% for query in queries %}
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ query.name }}</h5>
-                        <p class="card-text">{{ query.message }}</p>
-                        {% if query.reply %}
-                            <hr>
-                            <h6 class="card-title" >Reply:</h6>
-                            <p class="card-text">{{ query.reply }}</p>
-                        {% elif is_faculty %}
-                            <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#replyModal{{ query.id }}">
-                                Reply
-                            </button>
-                        {% endif %}
-                        <small class="text-white">Created at: {{ query.created_at }}</small>
-                    </div>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button"
+                        role="tab" aria-controls="feedback" aria-selected="false">Feedback
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="queries" role="tabpanel" aria-labelledby="queries-tab">
+                <div class="d-flex justify-content-between align-items-center my-3">
+                    <h2>Queries & Replies</h2>
+                    {% if not faculty %}
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#queryModal">
+                            Add New Query
+                        </button>
+                    {% endif %}
                 </div>
-                {% if is_faculty %}
-                <!-- Modal for replying to query -->
-                <div class="modal fade" id="replyModal{{ query.id }}" tabindex="-1" aria-labelledby="replyModalLabel{{ query.id }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="replyModalLabel{{ query.id }}">Reply to Query</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="post" action="{% url 'reply_to_query' query.id %}">
-                                    {% csrf_token %}
-                                    <div class="mb-3">
-                                        <label for="reply{{ query.id }}" class="form-label">Reply:</label>
-                                        <textarea class="form-control" id="reply{{ query.id }}" name="reply" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Reply</button>
-                                </form>
-                            </div>
+                {% for query in queries %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ query.name }}</h5>
+                            <p class="card-text">{{ query.message }}</p>
+                            {% if query.reply %}
+                                <hr>
+                                <h6 class="card-title">Reply:</h6>
+                                <p class="card-text">{{ query.reply }}</p>
+                            {% elif is_faculty %}
+                                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#replyModal{{ query.id }}">
+                                    Reply
+                                </button>
+                            {% endif %}
+                            <small class="text-white">Created at: {{ query.created_at }}</small>
                         </div>
                     </div>
+                    {% if is_faculty %}
+                        <!-- Modal for replying to query -->
+                        <div class="modal fade" id="replyModal{{ query.id }}" tabindex="-1"
+                             aria-labelledby="replyModalLabel{{ query.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="replyModalLabel{{ query.id }}">Reply to Query</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="{% url 'reply_to_query' query.id %}">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="reply{{ query.id }}" class="form-label">Reply:</label>
+                                                <textarea class="form-control" id="reply{{ query.id }}" name="reply"
+                                                          rows="3" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit Reply</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p>No queries found.</p>
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                <div class="d-flex justify-content-between align-items-center my-3">
+                    <h2>Feedback</h2>
+                    {% if is_faculty %}
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#feedbackModal">
+                            Add New Feedback
+                        </button>
+                    {% endif %}
                 </div>
-                {% endif %}
-            {% empty %}
-                <p>No queries found.</p>
-            {% endfor %}
-        </div>
-        <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
-            <div class="d-flex justify-content-between align-items-center my-3">
-                <h2>Feedback</h2>
-                {% if is_faculty %}
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-                    Add New Feedback
-                </button>
-                {% endif %}
+                {% for feedback in feedbacks %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ feedback.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-white">Project: {{ feedback.project }}</h6>
+                            <p class="card-text">{{ feedback.message }}</p>
+                            <small class="text-white">Created at: {{ feedback.created_at }}</small>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No feedback found.</p>
+                {% endfor %}
             </div>
-            {% for feedback in feedbacks %}
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ feedback.name }}</h5>
-                        <h6 class="card-subtitle mb-2 text-white">Project: {{ feedback.project }}</h6>
-                        <p class="card-text">{{ feedback.message }}</p>
-                        <small class="text-white">Created at: {{ feedback.created_at }}</small>
+        </div>
+    </div>
+
+    <!-- Modal for adding new query -->
+    <div class="modal fade" id="queryModal" tabindex="-1" aria-labelledby="queryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="queryModalLabel">Add New Query</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="queryForm" method="post" action="{% url 'queries_feedback' %}" class="w-100">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ query_form.name.id_for_label }}" class="form-label">Subject:</label>
+                            {{ query_form.name|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ query_form.message.id_for_label }}" class="form-label">Message:</label>
+                            {{ query_form.message|add_class:"form-control" }}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary" name="query_submit">Submit Query</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if is_faculty %}
+        <!-- Modal for adding new feedback -->
+        <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="feedbackModalLabel">Add New Feedback</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="feedbackForm" method="post" action="{% url 'faculty_feedback' pk %}" class="w-100">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="feedback_name" class="form-label">Name:</label>
+                                <input type="text" class="form-control" id="feedback_name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="feedback_message" class="form-label">Message:</label>
+                                <textarea class="form-control" id="feedback_message" name="message" rows="3"
+                                          required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            {% empty %}
-                <p>No feedback found.</p>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
-<!-- Modal for adding new query -->
-<div class="modal fade" id="queryModal" tabindex="-1" aria-labelledby="queryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="queryModalLabel">Add New Query</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-           <div class="modal-body">
-                <form id="queryForm" method="post" action="{% url 'queries_feedback' %}" class="w-100">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="{{ query_form.name.id_for_label }}" class="form-label">Subject:</label>
-                        {{ query_form.name|add_class:"form-control" }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{ query_form.message.id_for_label }}" class="form-label">Message:</label>
-                        {{ query_form.message|add_class:"form-control" }}
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary" name="query_submit">Submit Query</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
-</div>
-
-{% if is_faculty %}
-<!-- Modal for adding new feedback -->
-<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="feedbackModalLabel">Add New Feedback</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-           <div class="modal-body">
-                <form id="feedbackForm" method="post" action="{% url 'faculty_feedback' pk %}" class="w-100">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="feedback_name" class="form-label">Name:</label>
-                        <input type="text" class="form-control" id="feedback_name" name="name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="feedback_message" class="form-label">Message:</label>
-                        <textarea class="form-control" id="feedback_message" name="message" rows="3" required></textarea>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}
-<script>
-    // ... (keep the existing JavaScript)
-</script>
+    <script>
+        // ... (keep the existing JavaScript)
+    </script>
 {% endblock %}
