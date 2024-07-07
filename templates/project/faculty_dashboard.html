@@ -20,6 +20,7 @@
             margin: 0;
             padding: 0;
         }
+
         body {
             background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #C06C84 100%);
             color: white;
@@ -27,6 +28,7 @@
             display: flex;
             flex-direction: column;
         }
+
         .faculty-container {
             background: rgba(255, 255, 255, 0.2);
             padding: 40px;
@@ -36,16 +38,19 @@
             margin: 50px auto;
             flex-grow: 1;
         }
+
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
         }
+
         .welcome-message {
             font-size: 24px;
             font-weight: bold;
         }
+
         .profile-icon {
             width: 40px;
             height: 40px;
@@ -54,6 +59,7 @@
             background-size: cover;
             cursor: pointer;
         }
+
         h3 {
             color: white;
             margin-bottom: 20px;
@@ -61,13 +67,16 @@
             border-bottom: 2px solid white;
             padding-bottom: 5px;
         }
+
         .team-list, .announcements {
             margin-top: 30px;
         }
+
         .team-list ul {
             list-style-type: none;
             padding: 0;
         }
+
         .team-list li {
             background: none;
             color: white;
@@ -76,9 +85,11 @@
             border-radius: 5px;
             display: block;
         }
+
         .announcement-form {
             margin-top: 30px;
         }
+
         .announcement-form textarea {
             width: 100%;
             height: 100px;
@@ -87,6 +98,7 @@
             border: none;
             margin-bottom: 10px;
         }
+
         .announcement-form button {
             background-color: #4A00E0;
             color: white;
@@ -99,9 +111,136 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         .announcement-form button:hover {
             background-color: #8E2DE2;
         }
+
+        .announcement-item {
+            background: white;
+            color: #4A00E0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style><!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Faculty Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="{% static 'assets/img/site.webmanifest' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!-- Other CSS links... -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #C06C84 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .faculty-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: 50px auto;
+            flex-grow: 1;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: url("{% static 'assets/img/default.jpg' %}") no-repeat center center;
+            background-size: cover;
+            cursor: pointer;
+        }
+
+        h3 {
+            color: white;
+            margin-bottom: 20px;
+            display: inline-block;
+            border-bottom: 2px solid white;
+            padding-bottom: 5px;
+        }
+
+        .team-list, .announcements {
+            margin-top: 30px;
+        }
+
+        .team-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .team-list li {
+            background: none;
+            color: white;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .announcement-form {
+            margin-top: 30px;
+        }
+
+        .announcement-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        .announcement-form button {
+            background-color: #4A00E0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .announcement-form button:hover {
+            background-color: #8E2DE2;
+        }
+
         .announcement-item {
             background: white;
             color: #4A00E0;
@@ -110,65 +249,6 @@
             margin-bottom: 10px;
         }
     </style>
-</head>
-<body>
-    <main class="faculty-container">
-        <!-- Navigation and Header -->
-        <header>
-            <div class="header-top">
-                <div class="welcome-message">Welcome, {{ faculty_name }}</div>
-                <button id="plagiarismBtn">Check Plagiarism</button>
-                <div class="profile-icon"></div>
-            </div>
-        </header>
-        <hr>
-        <!-- Teams List -->
-        <section class="team-list">
-            <h3>Teams</h3>
-            <ul>
-                {% for team in teams %}
-                    <li><a href="{% url 'project_detail' team.project_id_id %}">{{ forloop.counter }}. {{ team.project_id}}</a></li>
-                {% endfor %}
-            </ul>
-        </section>
-
-        <!-- Announcements -->
-        <section class="announcements">
-            <div>
-                <h3>Announcements</h3>
-                <div class="announcement-list" style="margin-bottom: 20px;">
-                    {% for announcement in announcements %}
-                        <div class="announcement-item" style="padding: 10px; border: 1px solid #ccc; margin-bottom: 10px;">{{ announcement.text }}</div>
-                    {% endfor %}
-                </div>
-                <div class="announcement-form">
-                    <form action="{% url 'make_announcement' %}" method="post">
-                        {% csrf_token %}
-                        <textarea name="announcement_text" placeholder="Write your announcement here..." style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
-                        <button type="submit" class="btn btn-primary">Make Announcement</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-    <div id="plagiarismModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Upload PDF for Plagiarism Check</h2>
-                <form id="plagiarismForm" method="post" enctype="multipart/form-data" action="{% url 'upload_pdf' %}">
-                    {% csrf_token %}
-                    <input type="file" name="pdf_file" accept=".pdf" required>
-                    <button type="submit">Upload and Check</button>
-                </form>
-            </div>
-        </div>
-
-    </main>
-</body>
-htmlCopy<!doctype html>
-<html class="no-js" lang="zxx">
-<head>
-    <!-- ... (keep the existing head content) ... -->
     <style>
         /* ... (keep the existing styles) ... */
         .modal {
@@ -222,51 +302,208 @@ htmlCopy<!doctype html>
     </style>
 </head>
 <body>
-    <main class="faculty-container">
-        <!-- ... (keep the existing content) ... -->
+<main class="faculty-container">
+    <!-- Navigation and Header -->
+    <header>
+        <div class="header-top">
+            <div class="welcome-message">Welcome, {{ faculty_name }}</div>
+            <div class="profile-icon"></div>
+        </div>
+    </header>
+    <hr>
+    <!-- Teams List -->
+    <section class="team-list">
+        <h3>Teams</h3>
+        <ul>
+            {% for team in teams %}
+                <li>
+                    <a href="{% url 'project_detail' team.project_id_id %}">{{ forloop.counter }}. {{ team.project_id }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
 
-        <!-- Plagiarism Check Button -->
-        <button id="plagiarismBtn">Check Plagiarism</button>
-
-        <!-- Plagiarism Check Modal -->
-        <div id="plagiarismModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Upload PDF for Plagiarism Check</h2>
-                <form id="plagiarismForm" method="post" enctype="multipart/form-data" action="{% url 'upload_pdf' %}">
+    <!-- Announcements -->
+    <section class="announcements">
+        <div>
+            <h3>Announcements</h3>
+            <div class="announcement-list" style="margin-bottom: 20px;">
+                {% for announcement in announcements %}
+                    <div class="announcement-item"
+                         style="padding: 10px; border: 1px solid #ccc; margin-bottom: 10px;">{{ announcement.text }}</div>
+                {% endfor %}
+            </div>
+            <div class="announcement-form">
+                <form action="{% url 'make_announcement' %}" method="post">
                     {% csrf_token %}
-                    <input type="file" name="pdf_file" accept=".pdf" required>
-                    <button type="submit">Upload and Check</button>
+                    <textarea name="announcement_text" placeholder="Write your announcement here..."
+                              style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+                    <button type="submit" class="btn btn-primary">Make Announcement</button>
+
                 </form>
+                <button class="mt-3" id="plagiarismBtn">Check Plagiarism</button>
+
+                <!-- Plagiarism Check Modal -->
+                <div id="plagiarismModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Upload PDF for Plagiarism Check</h2>
+                        <form id="plagiarismForm" method="post" enctype="multipart/form-data"
+                              action="{% url 'upload_pdf' %}">
+                            {% csrf_token %}
+                            <input type="file" name="pdf_file" accept=".pdf" required>
+                            <button class="mt-3" type="submit">Upload and Check</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <script>
-        // Get the modal
-        var modal = document.getElementById("plagiarismModal");
+    <div id="plagiarismModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Upload PDF for Plagiarism Check</h2>
+            <form id="plagiarismForm" method="post" enctype="multipart/form-data" action="{% url 'upload_pdf' %}">
+                {% csrf_token %}
+                <input type="file" name="pdf_file" accept=".pdf" required>
+                <button type="submit">Upload and Check</button>
+            </form>
+        </div>
+    </div>
 
-        // Get the button that opens the modal
-        var btn = document.getElementById("plagiarismBtn");
+</main>
+</body>
 
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+<script>
+    // Get the modal
+    var modal = document.getElementById("plagiarismModal");
 
-        // When the user clicks the button, open the modal
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
+    // Get the button that opens the modal
+    var btn = document.getElementById("plagiarismBtn");
 
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
             modal.style.display = "none";
         }
+    }
+</script>
+</html>
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
+</head>
+<body>
+<main class="faculty-container">
+    <!-- Navigation and Header -->
+    <header>
+        <div class="header-top">
+            <div class="welcome-message">Welcome, {{ faculty_name }}</div>
+            <div class="profile-icon"></div>
+        </div>
+    </header>
+    <hr>
+    <!-- Teams List -->
+    <section class="team-list">
+        <h3>Teams</h3>
+        <ul>
+            {% for team in teams %}
+                <li>
+                    <a href="{% url 'project_detail' team.project_id_id %}">{{ forloop.counter }}. {{ team.project_id }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Announcements -->
+    <section class="announcements">
+        <div>
+            <h3>Announcements</h3>
+            <div class="announcement-list" style="margin-bottom: 20px;">
+                {% for announcement in announcements %}
+                    <div class="announcement-item"
+                         style="padding: 10px; border: 1px solid #ccc; margin-bottom: 10px;">{{ announcement.text }}</div>
+                {% endfor %}
+            </div>
+            <div class="announcement-form">
+                <form action="{% url 'make_announcement' %}" method="post">
+                    {% csrf_token %}
+                    <textarea name="announcement_text" placeholder="Write your announcement here..."
+                              style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+                    <button type="submit" class="btn btn-primary">Make Announcement</button>
+
+                </form>
+                <button class="mt-3" id="plagiarismBtn">Check Plagiarism</button>
+
+                <!-- Plagiarism Check Modal -->
+                <div id="plagiarismModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Upload PDF for Plagiarism Check</h2>
+                        <form id="plagiarismForm" method="post" enctype="multipart/form-data"
+                              action="{% url 'upload_pdf' %}">
+                            {% csrf_token %}
+                            <input type="file" name="pdf_file" accept=".pdf" required>
+                            <button type="submit">Upload and Check</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="plagiarismModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Upload PDF for Plagiarism Check</h2>
+            <form id="plagiarismForm" method="post" enctype="multipart/form-data" action="{% url 'upload_pdf' %}">
+                {% csrf_token %}
+                <input type="file" name="pdf_file" accept=".pdf" required>
+                <button type="submit">Upload and Check</button>
+            </form>
+        </div>
+    </div>
+
+</main>
+</body>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("plagiarismModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("plagiarismBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
         }
-    </script>
+    }
+</script>
 </html>
