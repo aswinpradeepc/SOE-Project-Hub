@@ -20,56 +20,67 @@
             margin: 0;
             padding: 0;
         }
+
         body {
-        background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #8E2DE2 100%);
-        background-attachment: fixed;
-        color: white;
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-    }
-    .project-container {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 90%;
-        max-width: 1400px;
-        margin: 50px auto;
-        flex-grow: 1;
-    }
+            background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #8E2DE2 100%);
+            background-attachment: fixed;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1400px;
+            margin: 50px auto;
+            flex-grow: 1;
+        }
+
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
         }
+
         .project-name {
             font-size: 24px;
             font-weight: bold;
         }
+
         .project-id {
             text-align: right;
         }
+
         .project-id label {
             display: block;
             font-size: 14px;
         }
+
         .project-id span {
             font-size: 20px;
             font-weight: bold;
         }
+
         h3 {
-            color: white;  /* Golden yellow for better readability */
+            color: white; /* Golden yellow for better readability */
             margin-bottom: 20px;
         }
+
         .team-members, .submission-details {
             margin-top: 30px;
         }
+
         .team-members ul {
             list-style-type: none;
             padding: 0;
         }
+
         .team-members li {
             background: white;
             color: #4A00E0;
@@ -78,36 +89,44 @@
             border-radius: 5px;
             display: block;
         }
+
         .faculty {
             font-weight: bold;
             margin-bottom: 15px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         th, td {
             border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 10px;
             text-align: left;
         }
+
         th {
             background: rgba(255, 255, 255, 0.1);
         }
+
         a {
             color: whitesmoke;
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
+
         h3 {
             margin-bottom: 20px;
-            display: inline-block;  /* This allows the underline to match the text width */
-            border-bottom: 2px solid white;  /* White underline */
-            padding-bottom: 5px;  /* Space between text and underline */
+            display: inline-block; /* This allows the underline to match the text width */
+            border-bottom: 2px solid white; /* White underline */
+            padding-bottom: 5px; /* Space between text and underline */
         }
+
         .team-members li {
             background: none;
             color: white;
@@ -116,10 +135,12 @@
             border-radius: 5px;
             display: block;
         }
+
         .faculty {
             font-weight: bold;
             margin-bottom: 15px;
         }
+
         .upload-button {
             background-color: #4A00E0;
             color: white;
@@ -133,79 +154,83 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         .upload-button:hover {
             background-color: #8E2DE2;
         }
     </style>
 </head>
 <body>
-    <main class="project-container">
-        <!-- Navigation and Header -->
-        <header>
-            <div class="header-top">
-                <div class="project-name">{{ project.project_name }}</div>
-                <div class="project-id">
-                    <label>Project ID</label>
-                    <span>{{ project.project_id }}</span>
-                </div>
+<main class="project-container">
+    <!-- Navigation and Header -->
+    <header>
+        <div class="header-top">
+            <div class="project-name">{{ project.project_name }}</div>
+            <div class="project-id">
+                <label>Project ID</label>
+                <span>{{ project.project_id }}</span>
             </div>
-        </header>
-        <hr>
-        <!-- Team Members -->
-        <section class="team-members">
-            <h3>Team Members</h3>
-            <ul>
-                <li class="faculty">Faculty: {{ faculty }}</li>
-                {% for member in team_members %}
-                    <li>{{ forloop.counter }}. {{ member }}</li>
-                {% endfor %}
-            </ul>
-        </section>
+        </div>
+    </header>
+    <hr>
+    <!-- Team Members -->
+    <section class="team-members">
+        <h3>Team Members</h3>
+        <ul>
+            <li class="faculty">Faculty: {{ faculty }}</li>
+            {% for member in team_members %}
+                <li>{{ forloop.counter }}. {{ member }}</li>
+            {% endfor %}
+        </ul>
+    </section>
 
-        <!-- Submission Details -->
-        <section class="submission-details">
-            <h3>Submission Details</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sl No</th>
-                        <th>Document</th>
-                        <th>Upload/Download</th>
-                        <th>Deadline</th>
-                        <th>Status</th>
-                        <th>Marks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for document in submission_documents %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ document.name }}</td>
-                            <td>
-                                {% if document.file %}
-                                    <a href="{{ document.file.url }}" target="_blank">Download</a>
-                                {% else %}
-                                    <form action="{% url 'upload_document' project_id=project.project_id document=document.name %}" method="post" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                        <input type="file" name="file">
-                                        <button type="submit" class="upload-button">Upload</button>
-                                    </form>
-                                {% endif %}
-                            </td>
-                            <td>{{ document.deadline }}</td>
-                            <td>
-                                {% if document.file %}
-                                    Submitted
-                                {% else %}
-                                    Pending
-                                {% endif %}
-                            </td>
-                            <td>{{ document.marks|default_if_none:"-" }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    </main>
+    <!-- Submission Details -->
+    <section class="submission-details">
+        <h3>Submission Details</h3><br>
+        <a class="btn btn-secondary" href="{% url 'queries_feedback' %}">Queries and Feedbacks</a>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Sl No</th>
+                <th>Document</th>
+                <th>Upload/Download</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Marks</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for document in submission_documents %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ document.name }}</td>
+                    <td>
+                        {% if document.file %}
+                            <a href="{{ document.file.url }}" target="_blank">Download</a>
+                        {% else %}
+                            <form action="{% url 'upload_document' project_id=project.project_id document=document.name %}"
+                                  method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="file" name="file">
+                                <button type="submit" class="upload-button">Upload</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>{{ document.deadline }}</td>
+                    <td>
+                        {% if document.file %}
+                            Submitted
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </td>
+                    <td>{{ document.marks|default_if_none:"-" }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</main>
 </body>
 </html>

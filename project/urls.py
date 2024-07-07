@@ -14,4 +14,6 @@ urlpatterns = [
     # path('approve_document/<int:project_id>/<str:document>/', views.approve_document, name='approve_document'),
     # path('reject_document/<int:project_id>/<str:document>/', views.reject_document, name='reject_document'),
     path('evaluate_document/<int:project_id>/<str:document>/', views.evaluate_document, name='evaluate_document'),
+	path("plagarism_check",views.upload_and_check,name="upload_pdf"),
+	path("plagarism_result/<int:pk>",views.plagiarism_result,name="plagiarism_result")
 ]

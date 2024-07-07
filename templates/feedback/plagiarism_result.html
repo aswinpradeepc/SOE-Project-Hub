@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+    <style>
+        body {
+            background: linear-gradient(135deg, #4A00E0 0%, #8E2DE2 50%, #8E2DE2 100%);
+            background-attachment: fixed;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            color: white
+        }
+
+        h2 {
+            color: white;
+        }
+
+        label {
+            color: black
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4cd3e3;
+        }
+
+        .card-subtitle {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+
+        }
+
+        .card-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: white
+        }
+
+        h3 {
+            color: white;
+            margin-bottom: 20px;
+            display: inline-block;
+            border-bottom: 2px solid white;
+            padding-bottom: 5px;
+        }
+    </style>
+
+
+    <div>
+        <h2>Plagiarism Result</h2>
+        {{ plagiarism_check.plagiarism_result }}
+    </div>
+{% endblock %}
