@@ -107,6 +107,8 @@ class PlagiarismCheck(models.Model):
 			print(f"An error occurred: {e}")
 			self.plagiarism_result = {"error": str(e)}
 			self.save()
+    text = models.TextField()
+    faculty = models.ForeignKey('auth_login.FacultyProfile', on_delete=models.CASCADE)
 
 	def __str__(self):
 		return f"Plagiarism Check for {self.user.username} - {self.uploaded_at}"

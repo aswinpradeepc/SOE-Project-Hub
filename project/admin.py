@@ -3,4 +3,5 @@ from .models import *
 
 admin.site.register(Team)
 admin.site.register(Project)
+admin.site.register(Announcement)
 

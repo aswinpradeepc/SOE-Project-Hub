@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'project',
 	'feedback',
 	'widget_tweaks'
+    'support'
 ]
 
 MIDDLEWARE = [

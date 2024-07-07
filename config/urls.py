@@ -25,6 +25,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('feed/', include('feedback.urls')),
     path('auth/', include('auth_login.urls')),
+    path('support/', include('support.urls')),
     path('project/', include('project.urls')),
 ]
 
