@@ -75,6 +75,7 @@ class PlagiarismCheck(models.Model):
 	uploaded_at = models.DateTimeField(auto_now_add=True)
 	text_content = models.TextField(blank=True)
 	plagiarism_result = models.JSONField(null=True, blank=True)
+	result_text = models.TextField(null=True, blank=True)
 
 	def extract_text(self):
 		if self.pdf_file:
@@ -100,15 +101,20 @@ class PlagiarismCheck(models.Model):
 
 		payload = f"-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\n{self.text_content}\r\n-----011000010111000001101001--\r\n\r\n"
 		headers = {
-			"x-rapidapi-key": "d584ae3964msha8907f7375aa1e6p1176c8jsn20345a9bc6cc",
+			"x-rapidapi-key": "610012af4amshb4758aa2f220531p1ce299jsn4f1d3c73a6bd",
 			"x-rapidapi-host": "plagiarism-source-checker-with-links.p.rapidapi.com",
 			"Content-Type": "multipart/form-data; boundary=---011000010111000001101001"
 		}
 
 		response = requests.post(url, data=payload, headers=headers)
 
-		print(response.json())
+		res = response.json()
+		print(res)
+		if 'status' in res:
+			self.result_text = res['status']
+		elif 'message' in res:
+			self.result_text = res['message']
 		self.plagiarism_result = response.json()
-
+		self.save()
 
 

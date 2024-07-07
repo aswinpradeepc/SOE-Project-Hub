@@ -58,8 +58,8 @@
     </style>
 
 
-    <div>
+    <div class="d-flex justify-content-center align-center p-5 flex-column">
         <h2>Plagiarism Result</h2>
-        {{ plagiarism_check.plagiarism_result }}
+        <h2>Status : {{ plagiarism_check.result_text }}</h2>
     </div>
 {% endblock %}
