@@ -1,9 +1,14 @@
+import time
+
 from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
 from django.db import models
 import PyPDF2
 import requests
-
+import urllib.request
+import urllib.parse
+import urllib.error
+import ssl
 
 class Project(models.Model):
 	project_id = models.AutoField(primary_key=True)
@@ -82,27 +87,43 @@ class PlagiarismCheck(models.Model):
 
 				self.save()
 
-	def check_plagiarism(self):
+	def check_plagiarism(self, max_retries=3, initial_delay=1):
 		if not self.text_content:
 			self.extract_text()
 
 		url = "https://plagiarism-source-checker-with-links.p.rapidapi.com/data"
+
 		headers = {
 			"Content-Type": "multipart/form-data",
 			"x-rapidapi-host": "plagiarism-source-checker-with-links.p.rapidapi.com",
 			"x-rapidapi-key": "03f37734a4mshc7064a7f2aaf43cp104d0ejsn4ba7dc3c35f5"
 		}
-		payload = {"text": "BMI is a measurement of a person'\''s leanness or corpulence based on their height and weight, and is intended to quantify tissue mass. It is widely used as a general indicator of whether a person has a healthy body weight for their height. Specifically, the value obtained from the calculation of BMI is used to categorize whether a person is underweight, normal weight, overweight, or obese depending on what range the value falls between. These ranges of BMI vary based on factors such as region and age, and are sometimes further divided into subcategories such as severely underweight or very severely obese. Being overweight or underweight can have significant health effects, so while BMI is an imperfect measure of healthy body weight, it is a useful indicator of whether any additional testing or action is required"}
-		print(payload)
 
-		try:
-			response = requests.post(url, headers=headers, data=payload)
-			self.plagiarism_result = response.json()
-			print(self.plagiarism_result)
-			self.save()
-			pass
-		except requests.exceptions.RequestException as e:
-			print(f"An error occurred: {e}")
-			self.plagiarism_result = {"error": str(e)}
-			self.save()
+		text = self.text_content
+		data = {'text': text}
+
+		for attempt in range(max_retries):
+			try:
+				response = requests.post(url, headers=headers, data=data, verify=False)
+				response.raise_for_status()
+
+				self.plagiarism_result = response.text
+				print(self.plagiarism_result)
+				self.save()
+				return  # Success, exit the function
+			except requests.exceptions.HTTPError as e:
+				if e.response.status_code == 429:
+					if attempt < max_retries - 1:
+						delay = initial_delay * (2 ** attempt)
+						print(f"Rate limit exceeded. Retrying in {delay} seconds...")
+						time.sleep(delay)
+					else:
+						print("Max retries reached. Please try again later.")
+				else:
+					print(f"HTTP error occurred: {e}")
+					break  # Exit for non-429 errors
+			except requests.exceptions.RequestException as e:
+				print(f"An error occurred: {e}")
+				break  # Exit for other request exceptions
+
 
