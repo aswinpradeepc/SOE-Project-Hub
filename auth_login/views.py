@@ -58,7 +58,7 @@ def create_team(request):
         project_description = request.POST.get('project-description')
 
         faculty = FacultyProfile.objects.get(id=faculty_id)
-        faculty.team_coun += 1
+        faculty.team_count += 1
         faculty.save()
 
         # Create the Project instance with necessary fields

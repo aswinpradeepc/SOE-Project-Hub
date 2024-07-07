@@ -57,7 +57,7 @@ def faculty_dashboard(request, pk):
 			feedback.project = project
 			feedback.save()
 			messages.success(request, 'Feedback submitted successfully.')
-			return redirect('faculty_dashboard')
+			return redirect('faculty_feedback',pk)
 
 	context = {
 		'queries': queries,
