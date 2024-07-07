@@ -59,9 +59,7 @@ class Team(models.Model):
 
 class Announcement(models.Model):
 	text = models.TextField()
-
-	def __str__(self):
-		return self.text[:50]  # Display first 50 characters
+	faculty = models.ForeignKey('auth_login.FacultyProfile', on_delete=models.CASCADE)
 
 
 class PlagiarismCheck(models.Model):
@@ -107,8 +105,4 @@ class PlagiarismCheck(models.Model):
 			print(f"An error occurred: {e}")
 			self.plagiarism_result = {"error": str(e)}
 			self.save()
-    text = models.TextField()
-    faculty = models.ForeignKey('auth_login.FacultyProfile', on_delete=models.CASCADE)
 
-	def __str__(self):
-		return f"Plagiarism Check for {self.user.username} - {self.uploaded_at}"

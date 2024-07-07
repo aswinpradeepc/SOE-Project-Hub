@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'auth_login',
     'project',
 	'feedback',
-	'widget_tweaks'
+	'widget_tweaks',
     'support'
 ]
 
