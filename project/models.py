@@ -9,6 +9,8 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import ssl
+from shlex import quote as shlex_quote
+
 
 class Project(models.Model):
 	project_id = models.AutoField(primary_key=True)
@@ -87,43 +89,26 @@ class PlagiarismCheck(models.Model):
 
 				self.save()
 
-	def check_plagiarism(self, max_retries=3, initial_delay=1):
+	def check_plagiarism(self):
 		if not self.text_content:
 			self.extract_text()
 
+		import os
+		import requests
+
 		url = "https://plagiarism-source-checker-with-links.p.rapidapi.com/data"
 
+		payload = f"-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\n{self.text_content}\r\n-----011000010111000001101001--\r\n\r\n"
 		headers = {
-			"Content-Type": "multipart/form-data",
+			"x-rapidapi-key": "d584ae3964msha8907f7375aa1e6p1176c8jsn20345a9bc6cc",
 			"x-rapidapi-host": "plagiarism-source-checker-with-links.p.rapidapi.com",
-			"x-rapidapi-key": "03f37734a4mshc7064a7f2aaf43cp104d0ejsn4ba7dc3c35f5"
+			"Content-Type": "multipart/form-data; boundary=---011000010111000001101001"
 		}
 
-		text = self.text_content
-		data = {'text': text}
+		response = requests.post(url, data=payload, headers=headers)
 
-		for attempt in range(max_retries):
-			try:
-				response = requests.post(url, headers=headers, data=data, verify=False)
-				response.raise_for_status()
+		print(response.json())
+		self.plagiarism_result = response.json()
 
-				self.plagiarism_result = response.text
-				print(self.plagiarism_result)
-				self.save()
-				return  # Success, exit the function
-			except requests.exceptions.HTTPError as e:
-				if e.response.status_code == 429:
-					if attempt < max_retries - 1:
-						delay = initial_delay * (2 ** attempt)
-						print(f"Rate limit exceeded. Retrying in {delay} seconds...")
-						time.sleep(delay)
-					else:
-						print("Max retries reached. Please try again later.")
-				else:
-					print(f"HTTP error occurred: {e}")
-					break  # Exit for non-429 errors
-			except requests.exceptions.RequestException as e:
-				print(f"An error occurred: {e}")
-				break  # Exit for other request exceptions
 
 
