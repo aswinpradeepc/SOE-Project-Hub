@@ -43,8 +43,8 @@ def queries_feedback_view(request):
 
 @login_required
 def faculty_dashboard(request, pk):
-	queries = Query.objects.all().order_by('-created_at')
-	feedbacks = Feedback.objects.all().order_by('-created_at')
+	queries = Query.objects.filter(recipient=request.user).order_by('-created_at')
+	feedbacks = Feedback.objects.filter(project__team__faculty=request.user).order_by('-created_at')
 	query_form = QueryForm()
 	feedback_form = FeedbackForm()
 
