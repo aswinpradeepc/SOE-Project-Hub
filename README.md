@@ -1,6 +1,6 @@
 # SOE Project Hub
 
-SOE Project Hub is a comprehensive Django-based web application designed to streamline the process of project management, evaluation, and collaboration in academic settings. It provides tools for students to submit projects, faculty to evaluate and manage submissions, and an overall platform to foster collaboration and learning.
+SOE Project Hub is a Django-based web application designed to streamline the process of project management, evaluation, and collaboration in academic settings. It provides tools for students to submit projects, faculty to evaluate and manage submissions, and an overall platform to foster collaboration and learning.
 
 ## Features
 
