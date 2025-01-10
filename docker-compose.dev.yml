@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000"
+    env_file:
+      - ./.env
+    networks:
+      - web_network
+    volumes:
+      - .:/app  # Added for development to enable hot-reload
+    command: python manage.py runserver 0.0.0.0:8000
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    driver: bridge
