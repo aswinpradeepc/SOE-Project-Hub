@@ -14,10 +14,12 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 load_dotenv()
+from ast import literal_eval
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+ALLOWED_HOSTS = literal_eval(os.getenv('ALLOWED_HOSTS', "['*']"))
 
 
 # Quick-start development settings - unsuitable for production
